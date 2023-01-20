@@ -103,7 +103,7 @@ export class ExtensionBridge {
   private generateChildContext(
     context: ContentFieldContextObject
   ): ContentFieldContextObject {
-    this.isEditor = context.category === 'CONTENT_EDITOR';
+    this.isEditor = context.category === "CONTENT_EDITOR";
 
     const schema = this.extractSchema(
       this.isEditor ? (context as any).schema : context.fieldSchema
@@ -119,7 +119,7 @@ export class ExtensionBridge {
           ...schema["ui:extension"]?.params,
         },
       },
-      category: "CONTENT_FIELD"
+      category: "CONTENT_FIELD",
     };
   }
 
@@ -200,7 +200,10 @@ export class ExtensionBridge {
     await this.establishConnection();
 
     // Create a connection that a child iframe can use.
-    this.childConnection = new ServerConnection(frame, defaultOptions);
+    this.childConnection = new ServerConnection(frame, {
+      ...defaultOptions,
+      debug: true,
+    });
 
     // Event forwarding methods
 
