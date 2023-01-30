@@ -22,10 +22,15 @@ export enum CONTENT_REFERENCE {
 export enum FIELD {
   MODEL_GET = "field-model-get",
   MODEL_SET = "field-model-set",
+
   MODEL_RESET = "field-model-reset",
   MODEL_IS_VALID = "field-model-is-valid",
   MODEL_VALIDATE = "field-model-validate",
   SCHEMA_GET = "field-schema-get",
+}
+
+export enum MODEL {
+  MODEL_SET = "content-editor-model-set",
 }
 
 export enum CONTENT_EDITOR_FORM {

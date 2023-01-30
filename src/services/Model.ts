@@ -1,4 +1,4 @@
-import { CONTENT_EDITOR_FORM, FIELD } from "../constants/Events";
+import { CONTENT_EDITOR_FORM, FIELD, MODEL } from "../constants/Events";
 import { Context } from "./Context";
 import { ParentConnection } from "./ParentConnection";
 
@@ -33,6 +33,9 @@ export class Model {
   async set(model: any) {
     this.#model = model;
 
-    await this.parentConnectionService.request(FIELD.MODEL_SET, this.#model);
+    await this.parentConnectionService.request(
+      this.contextService.isEditor() ? MODEL.MODEL_SET : FIELD.MODEL_GET,
+      this.#model
+    );
   }
 }
