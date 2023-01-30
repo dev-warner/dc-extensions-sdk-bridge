@@ -36,6 +36,8 @@ export class Field {
     jsonpath.value(updatedModel, this.fieldPath, field);
 
     await this.modelService.set(updatedModel);
+
+    return field;
   }
 
   get(model: any) {
