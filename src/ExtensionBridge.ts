@@ -72,8 +72,10 @@ export class ExtensionBridge {
     this.frameService = new Frame(frame);
 
     await this.parentConnectionService.connect();
+
     await this.contextService.setInitalContext();
     await this.fieldService.setInitialValue();
+
     await this.childConnectionService.connect(
       this.frameService.getFrame(),
       options

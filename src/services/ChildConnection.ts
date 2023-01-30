@@ -24,7 +24,9 @@ export class ChildConnection {
       event,
       async (payload: any, resolve: EventResolve, reject: EventReject) => {
         try {
-          return resolve(await callback(payload));
+          const resolveValue = await callback(payload);
+
+          return resolve(resolveValue);
         } catch (e) {
           reject(e);
         }
