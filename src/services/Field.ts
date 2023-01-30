@@ -31,11 +31,9 @@ export class Field {
   async set(field: any) {
     this.field = field;
 
-    const updatedModel = jsonpath.value(
-      this.modelService.get() || {},
-      this.fieldPath,
-      field
-    );
+    let updatedModel = { ...this.modelService.get() };
+
+    jsonpath.value(updatedModel, this.fieldPath, field);
 
     await this.modelService.set(updatedModel);
   }
