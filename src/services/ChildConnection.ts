@@ -5,6 +5,16 @@ import { ParentConnection } from "./ParentConnection";
 type EventResolve = (result?: any) => any;
 type EventReject = (result: any) => any;
 
+type MessageRequest = (
+  payload: any,
+  resolve: EventResolve,
+  reject?: EventReject
+) => Promise<any>;
+
+type On = {
+  on: (event: string, cb: MessageRequest) => On;
+};
+
 export class ChildConnection {
   private childConnection: ServerConnection;
 
@@ -19,22 +29,8 @@ export class ChildConnection {
     return this.childConnection;
   }
 
-  on(
-    event: string,
-    callback: (payload: any) => Promise<any>
-  ): ServerConnection {
-    return this.childConnection.on(
-      event,
-      async (payload: any, resolve: EventResolve, reject: EventReject) => {
-        try {
-          const resolveValue = await callback(payload);
-
-          resolve(resolveValue);
-        } catch (e) {
-          reject(e);
-        }
-      }
-    );
+  on(event: string, cb: MessageRequest): On {
+    return this.childConnection.on.bind(this.childConnection)(event, cb);
   }
 
   forwardEvents(events: Array<string>) {

@@ -93,22 +93,69 @@ export class ExtensionBridge {
     ]);
 
     this.childConnectionService
-      .on(CONTEXT.GET, () => this.contextService.getContext())
-      .on(FIELD.MODEL_GET, () => this.fieldService.currentField())
-      .on(FIELD.MODEL_RESET, () => this.fieldService.reset())
-      .on(FIELD.MODEL_SET, (payload: any) => this.fieldService.set(payload))
-      .on(FIELD.MODEL_IS_VALID, (payload: any) =>
-        this.validationService.isValid(payload)
-      )
-      .on(FIELD.MODEL_VALIDATE, (payload: any) =>
-        this.validationService.validate(payload)
-      )
-      .on(FIELD.SCHEMA_GET, (payload: any) =>
-        this.contextService.getSchemaFromContext(payload)
-      )
-      .on(FRAME.HEIGHT_GET, () => this.frameService.getHeight())
-      .on(FRAME.HEIGHT_SET, (height: number) =>
-        this.frameService.setHeight(height)
-      );
+      .on(CONTEXT.GET, async (_, resolve) => {
+        const context = this.contextService.getContext();
+
+        resolve(context);
+      })
+      .on(FIELD.MODEL_GET, async (_, resolve) => {
+        const field = this.fieldService.currentField();
+
+        resolve(field);
+      })
+      .on(FIELD.MODEL_RESET, async (_, resolve, reject) => {
+        try {
+          await this.fieldService.reset();
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      })
+      .on(FIELD.MODEL_SET, async (payload, resolve, reject) => {
+        try {
+          await this.fieldService.set(payload);
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      })
+      .on(FIELD.MODEL_IS_VALID, async (payload, resolve, reject) => {
+        try {
+          const isValid = await this.validationService.isValid(payload);
+
+          resolve(isValid);
+        } catch (err) {
+          reject(err);
+        }
+      })
+      .on(FIELD.MODEL_VALIDATE, async (payload, resolve, reject) => {
+        try {
+          const validation = await this.validationService.validate(payload);
+
+          resolve(validation);
+        } catch (err) {
+          reject(err);
+        }
+      })
+      .on(FIELD.SCHEMA_GET, async (payload, resolve, reject) => {
+        try {
+          const context = await this.contextService.getSchemaFromContext(
+            payload
+          );
+
+          resolve(context);
+        } catch (err) {
+          reject(err);
+        }
+      })
+      .on(FRAME.HEIGHT_GET, async (_, resolve) => {
+        const height = this.frameService.getHeight();
+
+        resolve(height);
+      })
+      .on(FRAME.HEIGHT_SET, async (height: number, resolve) => {
+        this.frameService.setHeight(height);
+        resolve();
+      });
   }
 }

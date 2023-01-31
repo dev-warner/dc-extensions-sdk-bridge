@@ -66,12 +66,13 @@ export class Context {
       const context = this.getContext();
 
       return context.fieldSchema;
-    } else {
-      const result = await this.parentConnectionService.request(
-        FIELD.SCHEMA_GET,
-        payload
-      );
-      return this.schemaService.extractSchema(result);
     }
+
+    const result = await this.parentConnectionService.request(
+      FIELD.SCHEMA_GET,
+      payload
+    );
+
+    return this.schemaService.extractSchema(result);
   }
 }
