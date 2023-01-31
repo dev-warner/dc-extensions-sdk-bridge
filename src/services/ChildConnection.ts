@@ -35,9 +35,14 @@ export class ChildConnection {
 
   forwardEvents(events: Array<string>) {
     for (let event of events) {
-      this.on(event, (payload: any) =>
-        this.parentConnectionService.request(event, payload)
-      );
+      this.on(event, async (payload: any, resolve) => {
+        const resolveValue = await this.parentConnectionService.request(
+          event,
+          payload
+        );
+
+        resolve(resolveValue);
+      });
     }
   }
 }
