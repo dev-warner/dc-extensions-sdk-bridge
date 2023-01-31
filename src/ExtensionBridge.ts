@@ -153,9 +153,8 @@ export class ExtensionBridge {
 
         resolve(height);
       })
-      .on(FRAME.HEIGHT_SET, async (height: number, resolve) => {
+      .on(FRAME.HEIGHT_SET, async (height: number) => {
         this.frameService.setHeight(height);
-        resolve();
       });
   }
 }
