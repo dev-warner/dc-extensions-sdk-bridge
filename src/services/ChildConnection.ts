@@ -19,14 +19,17 @@ export class ChildConnection {
     return this.childConnection;
   }
 
-  on(event: string, callback: Function): ServerConnection {
+  on(
+    event: string,
+    callback: (payload: any) => Promise<any>
+  ): ServerConnection {
     return this.childConnection.on(
       event,
       async (payload: any, resolve: EventResolve, reject: EventReject) => {
         try {
           const resolveValue = await callback(payload);
 
-          return resolve(resolveValue);
+          resolve(resolveValue);
         } catch (e) {
           reject(e);
         }
@@ -36,7 +39,7 @@ export class ChildConnection {
 
   forwardEvents(events: Array<string>) {
     for (let event of events) {
-      this.on(event, async (payload: any) =>
+      this.on(event, (payload: any) =>
         this.parentConnectionService.request(event, payload)
       );
     }

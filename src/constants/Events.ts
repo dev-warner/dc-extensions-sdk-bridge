@@ -29,10 +29,6 @@ export enum FIELD {
   SCHEMA_GET = "field-schema-get",
 }
 
-export enum MODEL {
-  MODEL_SET = "content-editor-model-set",
-}
-
 export enum CONTENT_EDITOR_FORM {
   CONTENT_EDITOR_FORM_GET = "content-editor-model-get",
   CONTENT_EDITOR_FORM_SET = "content-editor-model-set",

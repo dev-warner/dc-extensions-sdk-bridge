@@ -17,6 +17,8 @@ export class Field {
 
       this.field = fieldValue;
       this.initialValue = fieldValue;
+    } else {
+      this.initialValue = this.field;
     }
   }
 
