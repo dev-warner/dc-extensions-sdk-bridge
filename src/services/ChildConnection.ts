@@ -30,18 +30,23 @@ export class ChildConnection {
   }
 
   on(event: string, cb: MessageRequest): On {
-    return this.childConnection.on.bind(this.childConnection)(event, cb);
+    this.childConnection.on(event, cb);
+
+    return this;
   }
 
   forwardEvents(events: Array<string>) {
     for (let event of events) {
-      this.on(event, async (payload: any, resolve) => {
-        const resolveValue = await this.parentConnectionService.request(
-          event,
-          payload
-        );
-
-        resolve(resolveValue);
+      this.on(event, async (payload: any, resolve, reject) => {
+        try {
+          const result = await this.parentConnectionService.request(
+            event,
+            payload
+          );
+          resolve(result);
+        } catch (e) {
+          reject(e);
+        }
       });
     }
   }
