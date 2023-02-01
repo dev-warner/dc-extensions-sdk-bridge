@@ -12,7 +12,7 @@ type MessageRequest = (
 ) => Promise<any>;
 
 type On = {
-  on: (event: string, cb: MessageRequest) => On;
+  on: (event: string, cb: (payload: any) => Promise<any>) => On;
 };
 
 export class ChildConnection {
@@ -29,24 +29,33 @@ export class ChildConnection {
     return this.childConnection;
   }
 
-  on(event: string, cb: MessageRequest): On {
-    this.childConnection.on(event, cb);
+  on<Payload = any>(event: string, cb: (payload: Payload) => Promise<any>): On {
+    this.childConnection.on(
+      event,
+      async (payload: Payload, resolve: EventResolve, reject: EventReject) => {
+        try {
+          const resolveValue = await cb(payload);
+
+          if (resolve) {
+            resolve(resolveValue);
+          }
+        } catch (err) {
+          reject(err);
+        }
+      }
+    );
 
     return this;
   }
 
   forwardEvents(events: Array<string>) {
     for (let event of events) {
-      this.on(event, async (payload: any, resolve, reject) => {
-        try {
-          const result = await this.parentConnectionService.request(
-            event,
-            payload
-          );
-          resolve(result);
-        } catch (e) {
-          reject(e);
-        }
+      this.on(event, async (payload: any) => {
+        const result = await this.parentConnectionService.request(
+          event,
+          payload
+        );
+        return result;
       });
     }
   }

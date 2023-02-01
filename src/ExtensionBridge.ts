@@ -93,65 +93,41 @@ export class ExtensionBridge {
     ]);
 
     this.childConnectionService
-      .on(CONTEXT.GET, async (_, resolve) => {
+      .on(CONTEXT.GET, async () => {
         const context = this.contextService.getContext();
 
-        resolve(context);
+        return context;
       })
-      .on(FIELD.MODEL_GET, async (_, resolve) => {
+      .on(FIELD.MODEL_GET, async () => {
         const field = this.fieldService.currentField();
 
-        resolve(field);
+        return field;
       })
-      .on(FIELD.MODEL_RESET, async (_, resolve, reject) => {
-        try {
-          await this.fieldService.reset();
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
+      .on(FIELD.MODEL_RESET, async () => {
+        await this.fieldService.reset();
       })
-      .on(FIELD.MODEL_SET, async (payload, resolve, reject) => {
-        try {
-          await this.fieldService.set(payload);
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
+      .on(FIELD.MODEL_SET, async (payload) => {
+        await this.fieldService.set(payload);
       })
-      .on(FIELD.MODEL_IS_VALID, async (payload, resolve, reject) => {
-        try {
-          const isValid = await this.validationService.isValid(payload);
+      .on(FIELD.MODEL_IS_VALID, async (payload) => {
+        const isValid = await this.validationService.isValid(payload);
 
-          resolve(isValid);
-        } catch (err) {
-          reject(err);
-        }
+        return isValid;
       })
-      .on(FIELD.MODEL_VALIDATE, async (payload, resolve, reject) => {
-        try {
-          const validation = await this.validationService.validate(payload);
+      .on(FIELD.MODEL_VALIDATE, async (payload) => {
+        const validation = await this.validationService.validate(payload);
 
-          resolve(validation);
-        } catch (err) {
-          reject(err);
-        }
+        return validation;
       })
-      .on(FIELD.SCHEMA_GET, async (payload, resolve, reject) => {
-        try {
-          const context = await this.contextService.getSchemaFromContext(
-            payload
-          );
+      .on(FIELD.SCHEMA_GET, async (payload) => {
+        const context = await this.contextService.getSchemaFromContext(payload);
 
-          resolve(context);
-        } catch (err) {
-          reject(err);
-        }
+        return context;
       })
-      .on(FRAME.HEIGHT_GET, async (_, resolve) => {
+      .on(FRAME.HEIGHT_GET, async () => {
         const height = this.frameService.getHeight();
 
-        resolve(height);
+        return height;
       })
       .on(FRAME.HEIGHT_SET, async (height: number) => {
         this.frameService.setHeight(height);
