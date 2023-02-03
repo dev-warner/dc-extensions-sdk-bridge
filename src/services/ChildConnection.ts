@@ -5,12 +5,6 @@ import { ParentConnection } from "./ParentConnection";
 type EventResolve = (result?: any) => any;
 type EventReject = (result: any) => any;
 
-type MessageRequest = (
-  payload: any,
-  resolve: EventResolve,
-  reject?: EventReject
-) => Promise<any>;
-
 type On = {
   on: (event: string, cb: (payload: any) => Promise<any>) => On;
 };

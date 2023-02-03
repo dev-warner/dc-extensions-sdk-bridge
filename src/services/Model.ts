@@ -25,7 +25,7 @@ export class Model {
         : FIELD.MODEL_GET
     );
 
-    this.model = model;
+    this.model = { ...model };
 
     return this.get();
   }

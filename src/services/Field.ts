@@ -11,8 +11,13 @@ export class Field {
   ) {}
 
   async setInitialValue() {
+    let model;
+
+    try {
+      model = await this.modelService.fetch();
+    } catch (err) {}
+
     if (!this.has()) {
-      const model = await this.modelService.fetch();
       const fieldValue = this.get(model);
 
       this.field = fieldValue;
