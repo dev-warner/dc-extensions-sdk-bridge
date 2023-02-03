@@ -27,7 +27,7 @@ export class Model {
 
     this.model = model;
 
-    return this.model;
+    return this.get();
   }
 
   async set(model: any) {
@@ -37,7 +37,7 @@ export class Model {
       this.contextService.isEditor()
         ? CONTENT_EDITOR_FORM.CONTENT_EDITOR_FORM_SET
         : FIELD.MODEL_SET,
-      this.model
+      this.get()
     );
   }
 }
