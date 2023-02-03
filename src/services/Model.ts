@@ -11,11 +11,15 @@ export class Model {
   ) {}
 
   has() {
-    return Boolean(this.model);
+    return Boolean(this.contentItemModel);
   }
 
-  get() {
-    return { ...(this.model || {}) };
+  get contentItemModel() {
+    return this.model;
+  }
+
+  set contentItemModel(model) {
+    this.model = { ...model };
   }
 
   async fetch() {
@@ -25,19 +29,19 @@ export class Model {
         : FIELD.MODEL_GET
     );
 
-    this.model = { ...model };
+    this.contentItemModel = { ...model };
 
-    return this.get();
+    return { ...this.contentItemModel };
   }
 
   async set(model: any) {
-    this.model = model;
+    this.contentItemModel = model;
 
     await this.parentConnectionService.request(
       this.contextService.isEditor()
         ? CONTENT_EDITOR_FORM.CONTENT_EDITOR_FORM_SET
         : FIELD.MODEL_SET,
-      this.get()
+      { ...this.contentItemModel }
     );
   }
 }
