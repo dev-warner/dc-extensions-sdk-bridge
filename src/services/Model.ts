@@ -14,6 +14,10 @@ export class Model {
     return Boolean(this.contentItemModel);
   }
 
+  get() {
+    return { ...this.contentItemModel };
+  }
+
   get contentItemModel() {
     return this.model;
   }
