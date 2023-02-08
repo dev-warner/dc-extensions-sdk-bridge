@@ -133,4 +133,8 @@ export class ExtensionBridge {
         this.frameService.setHeight(height);
       });
   }
+
+  disconnect() {
+    this.parentConnectionService.disconnect();
+  }
 }
