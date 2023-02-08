@@ -135,6 +135,6 @@ export class ExtensionBridge {
   }
 
   disconnect() {
-    this.parentConnectionService.disconnect();
+    this.childConnectionService.disconnect();
   }
 }

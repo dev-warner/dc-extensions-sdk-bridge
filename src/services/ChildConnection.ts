@@ -23,6 +23,10 @@ export class ChildConnection {
     return this.childConnection;
   }
 
+  disconnect() {
+    this.childConnection.close();
+  }
+
   on<Payload = any>(event: string, cb: (payload: Payload) => Promise<any>): On {
     this.childConnection.on(
       event,

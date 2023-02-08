@@ -36,10 +36,6 @@ export class ParentConnection {
     });
   }
 
-  disconnect() {
-    this.parentConnection.close();
-  }
-
   request<ResolveValue = any>(
     event: string,
     payload?: any,
